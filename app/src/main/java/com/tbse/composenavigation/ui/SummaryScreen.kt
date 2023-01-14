@@ -28,8 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tbse.composenavigation.data.OrderUiState
 import com.tbse.composenavigation.R
+import com.tbse.composenavigation.data.OrderUiState
 import com.tbse.composenavigation.ui.components.FormattedPriceLabel
 
 /**
@@ -39,8 +39,8 @@ import com.tbse.composenavigation.ui.components.FormattedPriceLabel
 @Composable
 fun OrderSummaryScreen(
     orderUiState: OrderUiState,
-    // TODO: add onCancelButtonClicked
-    // TODO: add onSendButtonClicked
+    onCancelButtonClicked: () -> Unit = {},
+    onSendButtonClicked: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val resources = LocalContext.current.resources
@@ -85,13 +85,17 @@ fun OrderSummaryScreen(
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /* TODO: handle send button */ }
+            onClick = {
+                onSendButtonClicked(
+                    newOrder, orderSummary,
+                )
+            }
         ) {
             Text(stringResource(R.string.send))
         }
         OutlinedButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /* TODO: handle cancel button */ }
+            onClick = onCancelButtonClicked,
         ) {
             Text(stringResource(R.string.cancel))
         }
@@ -103,5 +107,12 @@ fun OrderSummaryScreen(
 fun OrderSummaryPreview() {
     OrderSummaryScreen(
         orderUiState = OrderUiState(0, "Test", "Test", "$300.00"),
+        onCancelButtonClicked = {},
+        onSendButtonClicked = ::onSendButtonClicked,
     )
+
+}
+
+fun onSendButtonClicked(s1: String, s2: String) {
+
 }
